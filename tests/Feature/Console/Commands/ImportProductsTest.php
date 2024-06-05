@@ -19,7 +19,7 @@ class ImportProductsTest extends TestCase
     {
         $this
             ->artisan("app:import-products /tmp/products.csv")
-            ->expectsOutput('The file is absent.');
+            ->expectsOutput('The file is not found.');
     }
 
     /**
@@ -91,6 +91,27 @@ class ImportProductsTest extends TestCase
         $this
             ->artisan("app:import-products $path")
             ->expectsOutput('Row 2 is malformed.');
+
+        unlink($path);
+    }
+
+    /**
+     * When used with --test the command should provide a report, but do no DB changes.
+     */
+    public function test_test_run(): void
+    {
+        $contents = [
+            'Product Code,Product Name,Product Description,Stock,Cost in GBP,Discontinued',
+            'P0001,TV,32” Tv,10,399.99,'
+        ];
+        $path = $this->createFile(implode("\n", $contents));
+
+        $this
+            ->artisan("app:import-products --test $path")
+            ->expectsOutput('Processed: 1')
+            ->expectsOutput('Successful: 1')
+            ->expectsOutput('Skipped: 0');
+        $this->assertFalse(Product::where('code', 'P0001')->exists());
 
         unlink($path);
     }
