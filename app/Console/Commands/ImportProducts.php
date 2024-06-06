@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Product;
+use DateTime;
 
 
 class ImportProducts extends Command
@@ -86,7 +87,6 @@ class ImportProducts extends Command
             $outputForSkipped .= ' (' . implode(', ', $skippedCodes) . ')';
         }
 
-        echo $outputForSkipped;
         $this->line($outputForSkipped);
         $this->line(implode("\n", $errors));
         fclose($file);
