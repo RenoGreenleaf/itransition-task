@@ -11,4 +11,9 @@ class Product extends Model
 
     protected $table = 'product_data';
     public $timestamps = false;
+
+    public function shouldBeSkipped(): bool
+    {
+        return ($this->price < 5 and $this->stock < 10) || $this->price > 1000;
+    }
 }
