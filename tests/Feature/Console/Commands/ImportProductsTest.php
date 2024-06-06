@@ -8,6 +8,9 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Testing;
 use Tests\TestCase;
 
+/**
+ * Command app:import-products.
+ */
 class ImportProductsTest extends TestCase
 {
     use RefreshDatabase;
