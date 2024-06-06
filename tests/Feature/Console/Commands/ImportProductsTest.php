@@ -111,7 +111,7 @@ class ImportProductsTest extends TestCase
             ->expectsOutput('Processed: 1')
             ->expectsOutput('Successful: 1')
             ->expectsOutput('Skipped: 0');
-        $this->assertFalse(Product::where('code', 'P0001')->exists());
+        $this->assertFalse(Models\Product::where('code', 'P0001')->exists());
 
         unlink($path);
     }
