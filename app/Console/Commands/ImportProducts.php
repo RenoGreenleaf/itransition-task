@@ -58,22 +58,23 @@ class ImportProducts extends Command
                 continue;
             }
 
-            $product = new Product;
-            $product->code = (string) $row[0];
-            $product->name = (string) $row[1];
-            $product->description = (string) $row[2];
-            $product->stock = (int) $row[3];
-            $product->price = (float) $row[4];
-            $product->discontinued = $row[5] == 'yes' ? new DateTime : null;
+            $condition = ['code' => $row[0]];
+            $product = [
+                'name' => (string) $row[1],
+                'description' => (string) $row[2],
+                'stock' => (int) $row[3],
+                'price' => (float) $row[4],
+                'discontinued' => $row[5] == 'yes' ? new DateTime : null
+            ];
 
-            if ($product->shouldBeSkipped()) {
-                $skippedCodes[] = $product->code;
+            if (($product['price'] < 5 and $product['stock'] < 10) || $product['price'] > 1000) { // import rules
+                $skippedCodes[] = $condition['code'];
                 $skipped++;
                 continue;
             }
 
             if (!$test) {
-                $product->save();
+                Product::updateOrCreate($condition, $product);
             }
 
             $successful++;

@@ -10,10 +10,13 @@ class Product extends Model
     use HasFactory;
 
     protected $table = 'product_data';
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+        'stock',
+        'price',
+        'discontinued',
+    ];
     public $timestamps = false;
-
-    public function shouldBeSkipped(): bool
-    {
-        return ($this->price < 5 and $this->stock < 10) || $this->price > 1000;
-    }
 }
